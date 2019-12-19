@@ -4,19 +4,19 @@ namespace Dasauser\Exceptions;
 use Throwable;
 
 /**
- * File not found custom exception
- * Class FileNotFoundException
+ * Unknown whatever custom exception
+ * Class UnknownException
  * @package Dasauser\Exceptions
  */
-class FileNotFoundException extends \Exception
+class UnknownException extends \Exception
 {
     /**
-     * FileNotFoundException constructor
+     * UnknownException constructor.
      * @param string $message
      * @param int $code
      * @param Throwable|null $previous
      */
-    public function __construct($message = "", $code = 404, Throwable $previous = null)
+    public function __construct($message = "", $code = 400, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
