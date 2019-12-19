@@ -1,0 +1,13 @@
+{
+    "name": "dasauser/shitty-builder",
+    "description": "another some shitty builder for css and js files",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dasauser",
+            "email": "dasauser@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
