@@ -1,6 +1,8 @@
 <?php
 namespace Dasauser;
 
+use Dasauser\Exceptions\FileNotFoundException;
+
 /**
  * Another some shitty builder for css and js files
  * Class ShittyBuilder
@@ -26,7 +28,7 @@ class ShittyBuilder
      * @param string $assets_dir
      * @param array $build_map_dir
      * @param string $built_dir
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public static function check(string $assets_dir, array $build_map_dir = [], string $built_dir = 'public/build') : void
     {
@@ -66,7 +68,7 @@ class ShittyBuilder
                     }
                 }
             } else {
-                throw new \Exception('File ' . $file_name . ' not found', 400);
+                throw new FileNotFoundException('File ' . $file_name . ' not found');
             }
         }
         if ($updated) {
@@ -77,7 +79,7 @@ class ShittyBuilder
     /**
      * Function getting files map
      * @return array
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     protected static function getFilesMap() : array
     {
@@ -85,7 +87,7 @@ class ShittyBuilder
         if (file_exists($file_map)) {
             return require_once($file_map);
         }
-        throw new \Exception('Set custom map file or create ' . static::$assets_dir . '/map.php', 400);
+        throw new FileNotFoundException('Set custom map file or create ' . static::$assets_dir . '/map.php');
     }
 
     /**
