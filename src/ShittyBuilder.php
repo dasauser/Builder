@@ -7,7 +7,7 @@ class ShittyBuilder
     public static $built_dir;
     public static $built_map;
 
-    public static function check(string $assets_dir, string $built_dir = 'public/build', array $build_map_dir = []) : void
+    public static function check(string $assets_dir, array $build_map_dir = [], string $built_dir = 'public/build') : void
     {
         self::$assets_dir = $assets_dir;
         self::$built_dir = $built_dir;
