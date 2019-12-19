@@ -1,12 +1,33 @@
 <?php
 namespace Dasauser;
 
+/**
+ * Another some shitty builder for css and js files
+ * Class ShittyBuilder
+ * @package Dasauser
+ */
 class ShittyBuilder
 {
+    /**
+     * @var $assets_dir
+     */
     protected static $assets_dir;
+    /**
+     * @var $built_dir
+     */
     protected static $built_dir;
+    /**
+     * @var $built_map
+     */
     protected static $built_map;
 
+    /**
+     * Function checking files for changes, updating and creating build files
+     * @param string $assets_dir
+     * @param array $build_map_dir
+     * @param string $built_dir
+     * @throws \Exception
+     */
     public static function check(string $assets_dir, array $build_map_dir = [], string $built_dir = 'public/build') : void
     {
         static::$assets_dir = $assets_dir;
@@ -53,6 +74,11 @@ class ShittyBuilder
         }
     }
 
+    /**
+     * Function getting files map
+     * @return array
+     * @throws \Exception
+     */
     protected static function getFilesMap() : array
     {
         $file_map = static::$assets_dir . '/map.php';
@@ -62,6 +88,10 @@ class ShittyBuilder
         throw new \Exception('Set custom map file or create ' . static::$assets_dir . '/map.php', 400);
     }
 
+    /**
+     * Function getting built file map
+     * @return array
+     */
     protected static function getBuildedMap() : array
     {
         static::$built_map = static::$built_dir . '/map.json';
@@ -71,6 +101,13 @@ class ShittyBuilder
         return [];
     }
 
+    /**
+     * Function creating new build files
+     * If old name exist, but old file not exist, then function creates new file with old name
+     * @param string $file_name
+     * @param string $new_file
+     * @return string
+     */
     protected static function copy(string $file_name, string $new_file = '') : string
     {
         $new_file = $new_file === '' ? substr(md5(uniqid()), -15) . substr($file_name, strripos($file_name, '.')) : $new_file;
@@ -84,6 +121,11 @@ class ShittyBuilder
         return $new_file;
     }
 
+    /**
+     * Function updating (minifying) content
+     * Now I am using the existing solution, but next time I will create my own
+     * @param string $file
+     */
     protected static function updateContent(string $file) : void
     {
         $file_content = file_get_contents($file);
@@ -98,11 +140,19 @@ class ShittyBuilder
         file_put_contents($file, json_decode($result, true)['minified']);
     }
 
+    /**
+     * Function write built map
+     * @param array $data
+     */
     protected static function write(array $data) : void
     {
         file_put_contents(static::$built_map, json_encode($data));
     }
 
+    /**
+     * Function deleting old useless files
+     * @param string $old_file_name
+     */
     protected static function deleteOld(string $old_file_name) : void
     {
         $old_file_name = static::$built_dir . "/$old_file_name";
