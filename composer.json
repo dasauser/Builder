@@ -9,7 +9,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+      "ext-json": "*",
+        "ext-curl": "*"
+    },
     "autoload": {
         "psr-4": {
             "Dasauser\\": "src/"
