@@ -19,7 +19,7 @@ class ShittyConnector
     protected static function getMap(string $map) : array
     {
         if (file_exists($map)) {
-            return require_once($map);
+            return json_decode(file_get_contents($map), true);
         }
         throw new FileNotFoundException("File $map not found");
     }
