@@ -2,6 +2,7 @@
 namespace Dasauser;
 
 use Dasauser\Exceptions\FileNotFoundException;
+use Dasauser\Exceptions\UnknownException;
 
 /**
  * Another some shitty builder for css and js files
@@ -38,7 +39,7 @@ class ShittyBuilder
             mkdir(static::$built_dir, 0755, true);
         }
         $build_map_array = $build_map_dir === [] ? static::getFilesMap() : $build_map_dir;
-        $built_map = static::getBuildedMap();
+        $built_map = static::getBuiltMap();
         $updated = false;
         foreach ($build_map_array as $item) {
             $file_name = static::$assets_dir . "/$item";
@@ -77,6 +78,38 @@ class ShittyBuilder
     }
 
     /**
+     * Function connecting style and script files
+     * @param string $built_dir
+     * @param string $map
+     * @throws FileNotFoundException
+     * @throws UnknownException
+     */
+    public static function connect(string $built_dir = 'public/build', string $map = 'public/build/map.json')
+    {
+        if (!file_exists($map)) {
+            throw new FileNotFoundException("File $map not found");
+        }
+        $map = static::getBuiltMap($map);
+        foreach ($map as $file) {
+            $file = "$built_dir/{$file['built_file']}";
+            if (file_exists($file)) {
+                $ext = substr($file, strripos($file, '.') + 1);
+                switch ($ext) {
+                    case 'js':
+                        echo "<script type='text/javascript' src='$file'></script>";
+                        break;
+                    case 'css':
+                        echo "<link rel='stylesheet' href='$file'>";
+                        break;
+                    default:
+                        throw new UnknownException('Unknown file extension: ' . $ext);
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
      * Function getting files map
      * @return array
      * @throws FileNotFoundException
@@ -94,7 +127,7 @@ class ShittyBuilder
      * Function getting built file map
      * @return array
      */
-    protected static function getBuildedMap() : array
+    protected static function getBuiltMap() : array
     {
         static::$built_map = static::$built_dir . '/map.json';
         if (file_exists(static::$built_map)) {
