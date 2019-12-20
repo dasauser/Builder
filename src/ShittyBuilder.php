@@ -46,8 +46,8 @@ class ShittyBuilder
                 $md_hash = md5_file($file_name);
                 if ($md_hash !== $built_map[$item]['hash']) {
                     $built_map[$item]['hash'] = $md_hash;
-                    if (isset($item['built_file'])) {
-                        static::deleteOld($item['built_file']);
+                    if (isset($built_map[$item]['built_file'])) {
+                        static::deleteOld($built_map[$item]['built_file']);
                     }
                     $updated = true;
                 } else {
