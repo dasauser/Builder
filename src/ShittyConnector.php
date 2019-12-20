@@ -42,10 +42,10 @@ class ShittyConnector
             if (file_exists($file)) {
                 $ext = substr($file, strripos($file, '.') + 1);
                 switch ($ext) {
-                    case 'css':
+                    case 'js':
                         echo "<script type='text/javascript' src='$file'></script>";
                         break;
-                    case 'js':
+                    case 'css':
                         echo "<link rel='stylesheet' href='$file'>";
                         break;
                     default:
