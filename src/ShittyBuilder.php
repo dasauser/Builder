@@ -25,20 +25,34 @@ class ShittyBuilder
     protected static $built_map;
 
     /**
+     * Binding function
+     * @param string $assets_dir
+     * @param array $build_map
+     * @param string $built_dir
+     * @throws FileNotFoundException
+     * @throws UnknownException
+     */
+    public static function checkAndConnect(string $assets_dir, array $build_map = [], string $built_dir = 'public/build') : void
+    {
+        static::check($assets_dir, $build_map, $built_dir);
+        static::connect();
+    }
+
+    /**
      * Function checking files for changes, updating and creating build files
      * @param string $assets_dir
-     * @param array $build_map_dir
+     * @param array $build_map
      * @param string $built_dir
      * @throws FileNotFoundException
      */
-    public static function check(string $assets_dir, array $build_map_dir = [], string $built_dir = 'public/build') : void
+    public static function check(string $assets_dir, array $build_map = [], string $built_dir = 'public/build') : void
     {
         static::$assets_dir = $assets_dir;
         static::$built_dir = $built_dir;
         if (!file_exists(static::$built_dir)) {
             mkdir(static::$built_dir, 0755, true);
         }
-        $build_map_array = $build_map_dir === [] ? static::getFilesMap() : $build_map_dir;
+        $build_map_array = $build_map === [] ? static::getFilesMap() : $build_map;
         $built_map = static::getBuiltMap();
         $updated = false;
         foreach ($build_map_array as $item) {
@@ -79,13 +93,12 @@ class ShittyBuilder
 
     /**
      * Function connecting style and script files
-     * @param string $built_dir
      * @throws UnknownException
      */
-    public static function connect(string $built_dir = 'public/build')
+    public static function connect()
     {
         foreach (static::getBuiltMap() as $file) {
-            $file = "$built_dir/{$file['built_file']}";
+            $file = static::$built_dir . "/{$file['built_file']}";
             if (file_exists($file)) {
                 $ext = substr($file, strripos($file, '.') + 1);
                 switch ($ext) {
