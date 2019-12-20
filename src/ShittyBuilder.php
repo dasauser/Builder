@@ -80,17 +80,11 @@ class ShittyBuilder
     /**
      * Function connecting style and script files
      * @param string $built_dir
-     * @param string $map
-     * @throws FileNotFoundException
      * @throws UnknownException
      */
-    public static function connect(string $built_dir = 'public/build', string $map = 'public/build/map.json')
+    public static function connect(string $built_dir = 'public/build')
     {
-        if (!file_exists($map)) {
-            throw new FileNotFoundException("File $map not found");
-        }
-        $map = static::getBuiltMap($map);
-        foreach ($map as $file) {
+        foreach (static::getBuiltMap() as $file) {
             $file = "$built_dir/{$file['built_file']}";
             if (file_exists($file)) {
                 $ext = substr($file, strripos($file, '.') + 1);
