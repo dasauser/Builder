@@ -95,7 +95,7 @@ class ShittyBuilder
      * Function connecting style and script files
      * @throws UnknownException
      */
-    public static function connect()
+    public static function connect() : void
     {
         foreach (static::getBuiltMap() as $file) {
             $file = static::$built_dir . "/{$file['built_file']}";
