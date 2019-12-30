@@ -50,9 +50,9 @@ class ShittyBuilder
     public static function check(string $assets_dir, array $build_map = [], string $built_dir = '', bool $minify = true) : void
     {
         $built_dir = $built_dir === '' ? 'public/build' : $built_dir;
-        $build_map_array = $build_map === [] ? static::getFilesMap() : $build_map;
         static::$assets_dir = $assets_dir;
         static::$built_dir = $built_dir;
+        $build_map_array = $build_map === [] ? static::getFilesMap() : $build_map;
         if (!file_exists(static::$built_dir)) {
             mkdir(static::$built_dir, 0755, true);
         }
