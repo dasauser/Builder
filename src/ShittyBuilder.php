@@ -33,7 +33,7 @@ class ShittyBuilder
      * @throws FileNotFoundException
      * @throws UnknownException
      */
-    public static function checkAndConnect(string $assets_dir, array $build_map = [], string $built_dir = 'public/build', bool $minify = true) : void
+    public static function checkAndConnect(string $assets_dir, array $build_map = [], string $built_dir = '', bool $minify = true) : void
     {
         static::check($assets_dir, $build_map, $built_dir, $minify);
         static::connect();
@@ -47,14 +47,15 @@ class ShittyBuilder
      * @param bool $minify
      * @throws FileNotFoundException
      */
-    public static function check(string $assets_dir, array $build_map = [], string $built_dir = 'public/build', bool $minify = true) : void
+    public static function check(string $assets_dir, array $build_map = [], string $built_dir = '', bool $minify = true) : void
     {
+        $built_dir = $built_dir === '' ? 'public/build' : $built_dir;
+        $build_map_array = $build_map === [] ? static::getFilesMap() : $build_map;
         static::$assets_dir = $assets_dir;
         static::$built_dir = $built_dir;
         if (!file_exists(static::$built_dir)) {
             mkdir(static::$built_dir, 0755, true);
         }
-        $build_map_array = $build_map === [] ? static::getFilesMap() : $build_map;
         $built_map = static::getBuiltMap();
         $updated = false;
         foreach ($build_map_array as $item) {
