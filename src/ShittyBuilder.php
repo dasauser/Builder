@@ -57,8 +57,9 @@ class ShittyBuilder
             mkdir(static::$built_dir, 0755, true);
         }
         $built_map = static::getBuiltMap();
-        $updated = false;
+        $updated_somebody = false;
         foreach ($build_map_array as $item) {
+            $updated = false;
             $file_name = static::$assets_dir . "/$item";
             if (file_exists($file_name)) {
                 $md_hash = md5_file($file_name);
@@ -79,19 +80,20 @@ class ShittyBuilder
                     }
                 }
                 if ($updated) {
-                    if (($built_map[$item]['built_file'] = static::copy($file_name)) !== '') {
+                    $updated_somebody = true;
+                    $new_file = static::copy($file_name);
+                    if ($new_file !== '') {
+                        $built_map[$item]['built_file'] = $new_file;
                         if ($minify){
                             static::minifyContent(static::$built_dir . '/' . $built_map[$item]['built_file']);
                         }
-                    } else {
-                        $updated = false;
                     }
                 }
             } else {
                 throw new FileNotFoundException('File ' . $file_name . ' not found');
             }
         }
-        if ($updated) {
+        if ($updated_somebody) {
             static::write($built_map);
         }
     }
