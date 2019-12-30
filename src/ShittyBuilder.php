@@ -45,7 +45,7 @@ class ShittyBuilder
      * @param string $built_dir
      * @throws FileNotFoundException
      */
-    public static function check(string $assets_dir, array $build_map = [], string $built_dir = 'public/build') : void
+    public static function check(string $assets_dir, array $build_map = [], string $built_dir = 'public/build', bool $minify = true) : void
     {
         static::$assets_dir = $assets_dir;
         static::$built_dir = $built_dir;
@@ -77,7 +77,9 @@ class ShittyBuilder
                 }
                 if ($updated) {
                     if (($built_map[$item]['built_file'] = static::copy($file_name)) !== '') {
-                        static::updateContent(static::$built_dir . '/' . $built_map[$item]['built_file']);
+                        if ($minify){
+                            static::minifyContent(static::$built_dir . '/' . $built_map[$item]['built_file']);
+                        }
                     } else {
                         $updated = false;
                     }
@@ -168,7 +170,7 @@ class ShittyBuilder
      * Now I am using the existing solution, but next time I will create my own
      * @param string $file
      */
-    protected static function updateContent(string $file) : void
+    protected static function minifyContent(string $file) : void
     {
         $file_content = file_get_contents($file);
         $curl = curl_init();
